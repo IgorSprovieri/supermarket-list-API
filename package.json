@@ -1,0 +1,26 @@
+{
+  "name": "supermarket-list-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "start:dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgorSprovieri/supermarket-list-API.git"
+  },
+  "author": "Igor Sprovieri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IgorSprovieri/supermarket-list-API/issues"
+  },
+  "homepage": "https://github.com/IgorSprovieri/supermarket-list-API#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.8.2",
+    "nodemon": "^2.0.20"
+  }
+}
