@@ -16,6 +16,15 @@ const listItemSchema = new mongoose.Schema({
 
 const listItem = mongoose.model("list_item", listItemSchema);
 
+validateIdObject = (IdObject) => {
+  const regex = /^[0-9a-fA-F]{24}$/;
+  return regex.test(IdObject);
+};
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.get("/items", async (req, res) => {
   try {
     const items = await listItem.find();
@@ -52,8 +61,26 @@ app.post("/item", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.delete("/item/:id", async (req, res) => {
+  const id = req.params.id;
+
+  if (!id || !validateIdObject(id)) {
+    return res.status(400).json({ error: "Id is missing or invalid" });
+  }
+
+  const itemFound = await listItem.findById(id);
+
+  if (!itemFound) {
+    return res.status(404).json({ error: "Item not found" });
+  }
+
+  try {
+    const deletedItem = await listItem.findByIdAndDelete(id);
+
+    return res.status(200).json(deletedItem);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
 });
 
 app.listen(port, () => {
