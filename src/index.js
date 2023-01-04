@@ -21,6 +21,11 @@ validateIdObject = (IdObject) => {
   return regex.test(IdObject);
 };
 
+validateNumber = (Number) => {
+  const regex = /^\d+$/;
+  return regex.test(Number);
+};
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -68,16 +73,53 @@ app.delete("/item/:id", async (req, res) => {
     return res.status(400).json({ error: "Id is missing or invalid" });
   }
 
-  const itemFound = await listItem.findById(id);
-
-  if (!itemFound) {
-    return res.status(404).json({ error: "Item not found" });
-  }
-
   try {
+    const itemFound = await listItem.findById(id);
+
+    if (!itemFound) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
     const deletedItem = await listItem.findByIdAndDelete(id);
 
     return res.status(200).json(deletedItem);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
+
+app.put("/item/:id", async (req, res) => {
+  const id = req.params.id;
+  const { name, quantity, checked } = req.body;
+
+  if (!id || !validateIdObject(id)) {
+    return res.status(400).json({ error: "Id is missing or invalid" });
+  }
+
+  if (quantity && !validateNumber(quantity)) {
+    return res.status(400).json({ error: "Invalid quantity" });
+  }
+
+  try {
+    const itemFound = await listItem.findById(id);
+
+    if (!itemFound) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    const updateItem = await listItem.findByIdAndUpdate(
+      id,
+      {
+        name: name,
+        quantity: quantity,
+        checked: checked,
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json(updateItem);
   } catch (error) {
     return res.status(500).json({ error });
   }
