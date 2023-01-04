@@ -7,6 +7,14 @@ async function connectDataBase() {
   await mongoose.connect("mongodb://localhost:27017");
 }
 
+const listItemSchema = new mongoose.Schema({
+  name: String,
+  quantity: Number,
+  checked: Boolean,
+});
+
+const listItem = mongoose.model("listItems", listItemSchema);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
