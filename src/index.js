@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+app.use(express.json());
 const port = 3333;
 
 async function connectDataBase() {
@@ -8,9 +9,9 @@ async function connectDataBase() {
 }
 
 const listItemSchema = new mongoose.Schema({
-  name: String,
-  quantity: Number,
-  checked: Boolean,
+  name: { type: String, required: true },
+  quantity: { type: Number, min: 0, default: 1 },
+  checked: { type: Boolean, default: false },
 });
 
 const listItem = mongoose.model("list_item", listItemSchema);
@@ -20,6 +21,32 @@ app.get("/items", async (req, res) => {
     const items = await listItem.find();
 
     return res.status(200).json(items);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
+
+app.post("/item", async (req, res) => {
+  const { name, quantity, checked } = req.body;
+
+  try {
+    await listItem.validate({
+      name: name,
+      quantity: quantity,
+      checked: checked,
+    });
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+
+  try {
+    const newItem = await listItem.create({
+      name: name,
+      quantity: quantity,
+      checked: checked,
+    });
+
+    return res.status(201).json(newItem);
   } catch (error) {
     return res.status(500).json({ error });
   }
