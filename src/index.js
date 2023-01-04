@@ -13,7 +13,17 @@ const listItemSchema = new mongoose.Schema({
   checked: Boolean,
 });
 
-const listItem = mongoose.model("listItems", listItemSchema);
+const listItem = mongoose.model("list_item", listItemSchema);
+
+app.get("/items", async (req, res) => {
+  try {
+    const items = await listItem.find();
+
+    return res.status(200).json(items);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
