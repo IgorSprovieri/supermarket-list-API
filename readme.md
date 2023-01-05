@@ -51,13 +51,20 @@ cd supermarket-list-API
 npm install
 ```
 
-6- Run the API:
+6 - Create .env following example:
+
+```
+PORT=3333
+DATABASE_URL=mongodb://localhost:27017
+```
+
+7- Run the API:
 
 ```
 npm run start
 ```
 
-7- Run the API on dev mode:
+8- Run the API on dev mode:
 
 ```
 npm run start:dev

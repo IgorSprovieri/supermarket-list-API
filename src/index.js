@@ -1,12 +1,19 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const listItemRouter = require("./routes/listItem");
 const app = express();
 app.use(express.json());
-const port = 3333;
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-async function connectDataBase() {
-  await mongoose.connect("mongodb://localhost:27017");
+const port = Number(process.env.PORT);
+
+async function connectDatabase() {
+  await mongoose.connect(process.env.DATABASE_URL);
 }
 
 app.get("/", (req, res) => {
