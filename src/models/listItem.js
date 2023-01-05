@@ -6,6 +6,4 @@ const listItemSchema = new mongoose.Schema({
   checked: { type: Boolean, default: false },
 });
 
-const listItem = mongoose.model("list_item", listItemSchema);
-
-module.exports = listItem;
+module.exports = mongoose.model("list_item", listItemSchema);

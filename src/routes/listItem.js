@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.router();
-const validations = require("../validate/validations.js");
-const listItem = require("./models/listItem.js");
+const router = express.Router();
+const validations = require("../validate/validations");
+const listItem = require("../models/listItem");
 
 router.get("/items", async (req, res) => {
   try {

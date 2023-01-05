@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const listItemRouter = require("./routes/listItem.js");
+const listItemRouter = require("./routes/listItem");
 const app = express();
 app.use(express.json());
 const port = 3333;
