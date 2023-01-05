@@ -5,7 +5,13 @@ const listItem = require("../models/listItem");
 
 router.get("/items", async (req, res) => {
   try {
-    const items = await listItem.find();
+    const { username } = req.headers;
+
+    if (!username) {
+      return res.status(401).json({ error: "username is required" });
+    }
+
+    const items = await listItem.find({ username: username });
 
     return res.status(200).json(items);
   } catch (error) {
@@ -14,7 +20,12 @@ router.get("/items", async (req, res) => {
 });
 
 router.post("/item", async (req, res) => {
+  const { username } = req.headers;
   const { name, quantity, checked } = req.body;
+
+  if (!username) {
+    return res.status(401).json({ error: "username is required" });
+  }
 
   try {
     await listItem.validate({
@@ -31,6 +42,7 @@ router.post("/item", async (req, res) => {
       name: name,
       quantity: quantity,
       checked: checked,
+      username: username,
     });
 
     return res.status(201).json(newItem);
@@ -41,6 +53,11 @@ router.post("/item", async (req, res) => {
 
 router.delete("/item/:id", async (req, res) => {
   const id = req.params.id;
+  const { username } = req.headers;
+
+  if (!username) {
+    return res.status(401).json({ error: "username is required" });
+  }
 
   if (!id || !validations.validateIdObject(id)) {
     return res.status(400).json({ error: "Id is missing or invalid" });
@@ -53,6 +70,10 @@ router.delete("/item/:id", async (req, res) => {
       return res.status(404).json({ error: "Item not found" });
     }
 
+    if (itemFound.username != username) {
+      return res.status(401).json({ error: "Acess denied: username is wrong" });
+    }
+
     const deletedItem = await listItem.findByIdAndDelete(id);
 
     return res.status(200).json(deletedItem);
@@ -63,6 +84,7 @@ router.delete("/item/:id", async (req, res) => {
 
 router.put("/item/:id", async (req, res) => {
   const id = req.params.id;
+  const { username } = req.headers;
   const { name, quantity, checked } = req.body;
 
   if (!id || !validations.validateIdObject(id)) {
@@ -73,11 +95,19 @@ router.put("/item/:id", async (req, res) => {
     return res.status(400).json({ error: "Invalid quantity" });
   }
 
+  if (!username) {
+    return res.status(401).json({ error: "username is required" });
+  }
+
   try {
     const itemFound = await listItem.findById(id);
 
     if (!itemFound) {
       return res.status(404).json({ error: "Item not found" });
+    }
+
+    if (itemFound.username != username) {
+      return res.status(401).json({ error: "Acess denied: username is wrong" });
     }
 
     const updateItem = await listItem.findByIdAndUpdate(
