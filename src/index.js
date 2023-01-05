@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   mongoose.set("strictQuery", true);
-  connectDataBase().catch((error) => {
+  connectDatabase().catch((error) => {
     console.log(error);
   });
   app.use("/", listItemRouter);
