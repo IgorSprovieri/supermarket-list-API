@@ -1,6 +1,6 @@
 import { db } from "../db";
 import { object, string, number, date, InferType } from "yup";
-import { findOne } from "../queries/users";
+import userQueries from "../queries/users";
 
 class users {
   async post(req, res) {
@@ -13,7 +13,7 @@ class users {
 
       await schema.validate(req.body);
 
-      const findOneResult = await findOne(username);
+      const findOneResult = await userQueries.findOne(username);
 
       if (findOneResult) {
         return res.status(400).json({ error: "User already exists" });
@@ -25,7 +25,7 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(500).json({ error: "The user can not be created" });
+        return res.status(400).json({ error: "The user can not be created" });
       }
 
       return res.status(201).json(result.rows[0]);
@@ -50,7 +50,7 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(500).json({ error: "User can not be found" });
+        return res.status(400).json({ error: "User can not be found" });
       }
 
       return res.status(200).json(result.rows[0]);
@@ -77,7 +77,7 @@ class users {
         return res.status(403).json({ error: "Access Denied" });
       }
 
-      const findOneResult = await findOne(data.username);
+      const findOneResult = await userQueries.findOne(data.username);
 
       if (findOneResult) {
         return res.status(400).json({ error: "User already exists" });
@@ -89,7 +89,7 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(500).json({ error: "User can not be updated" });
+        return res.status(400).json({ error: "User can not be updated" });
       }
 
       return res.status(200).json(result.rows[0]);
@@ -120,7 +120,7 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(500).json({ error: "User can not be deleted" });
+        return res.status(400).json({ error: "User can not be deleted" });
       }
 
       return res.status(200).json(result.rows[0]);

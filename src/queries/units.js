@@ -1,10 +1,14 @@
 import { db } from "../db";
 
-export const findById = async (id) => {
-  const text = "SELECT * FROM unit WHERE id = $1 RETURNING *";
-  const values = [id];
+class unitQueries {
+  async findById(id) {
+    const text = "SELECT * FROM units WHERE id = $1";
+    const values = [id];
 
-  const result = await db.query(text, values);
+    const result = await db.query(text, values);
 
-  return result.rows[0];
-};
+    return result.rows[0];
+  }
+}
+
+export default new unitQueries();
