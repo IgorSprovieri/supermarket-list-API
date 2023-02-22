@@ -33,7 +33,7 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(500).json({ error: "The user can not created" });
+        return res.status(500).json({ error: "The user can not be created" });
       }
 
       return res.status(201).json(result.rows[0]);
@@ -58,7 +58,7 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(400).json({ error: "User not exists" });
+        return res.status(500).json({ error: "User can not be found" });
       }
 
       return res.status(200).json(result.rows[0]);
@@ -93,7 +93,42 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(400).json({ error: "User not exists" });
+        return res.status(500).json({ error: "User can not be updated" });
+      }
+
+      return res.status(200).json(result.rows[0]);
+    } catch (error) {
+      return res.status(400).json({ error: error?.message });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const data = {
+        id: req.params.id,
+        currentUsername: req.headers.username,
+      };
+
+      const schema = object().shape({
+        id: number().required(),
+        currentUsername: string().required(),
+      });
+
+      await schema.validate(data);
+
+      const findOneResult = await findOne(data.currentUsername);
+
+      if (!findOneResult || findOneResult.id != data.id) {
+        return res.status(403).json({ error: "Access Denied" });
+      }
+
+      const text = "DELETE FROM users WHERE id = $1 RETURNING *";
+      const values = [data.id];
+
+      const result = await db.query(text, values);
+
+      if (!result.rows[0]) {
+        return res.status(500).json({ error: "User can not be deleted" });
       }
 
       return res.status(200).json(result.rows[0]);
