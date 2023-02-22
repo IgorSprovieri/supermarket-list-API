@@ -1,14 +1,6 @@
 import { db } from "../db";
 import { object, string, number, date, InferType } from "yup";
-
-export const findOne = async (username) => {
-  const text = "SELECT * FROM users WHERE username = $1";
-  const values = [username];
-
-  const result = await db.query(text, values);
-
-  return result.rows[0];
-};
+import { findOne } from "../queries/users";
 
 class users {
   async post(req, res) {
