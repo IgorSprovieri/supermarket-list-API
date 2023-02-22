@@ -1,7 +1,7 @@
 import { db } from "../db";
 import { object, string, number, date, InferType } from "yup";
 
-const findOne = async (username) => {
+export const findOne = async (username) => {
   const text = "SELECT * FROM users WHERE username = $1";
   const values = [username];
 
@@ -23,7 +23,7 @@ class users {
 
       const findOneResult = await findOne(username);
 
-      if (!findOneResult) {
+      if (findOneResult) {
         return res.status(400).json({ error: "User already exists" });
       }
 
@@ -81,6 +81,10 @@ class users {
 
       await schema.validate(data);
 
+      if (req.userId != data.id) {
+        return res.status(403).json({ error: "Access Denied" });
+      }
+
       const findOneResult = await findOne(data.username);
 
       if (findOneResult) {
@@ -106,19 +110,15 @@ class users {
     try {
       const data = {
         id: req.params.id,
-        currentUsername: req.headers.username,
       };
 
       const schema = object().shape({
         id: number().required(),
-        currentUsername: string().required(),
       });
 
       await schema.validate(data);
 
-      const findOneResult = await findOne(data.currentUsername);
-
-      if (!findOneResult || findOneResult.id != data.id) {
+      if (req.userId != data.id) {
         return res.status(403).json({ error: "Access Denied" });
       }
 
