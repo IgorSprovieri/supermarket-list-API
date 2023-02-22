@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { object, string, number, date, InferType } from "yup";
 
 const alreadyExists = async (username) => {
   const text = "SELECT * FROM users WHERE username = $1";
@@ -14,6 +15,12 @@ class users {
     try {
       const { username } = req.body;
 
+      const schema = object().shape({
+        username: string().required(),
+      });
+
+      await schema.validate(req.body);
+
       const alreadyExistsResult = await alreadyExists(username);
 
       if (alreadyExistsResult.rowCount > 0) {
@@ -26,12 +33,12 @@ class users {
       const result = await db.query(text, values);
 
       if (!result.rows[0]) {
-        return res.status(400).json({ error: "The user can not created" });
+        return res.status(500).json({ error: "The user can not created" });
       }
 
       return res.status(201).json(result.rows[0]);
     } catch (error) {
-      return res.status(500).json({ error: error?.message });
+      return res.status(400).json({ error: error?.message });
     }
   }
 }
