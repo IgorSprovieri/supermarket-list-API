@@ -41,6 +41,30 @@ class users {
       return res.status(400).json({ error: error?.message });
     }
   }
+  async get(req, res) {
+    try {
+      const { username } = req.query;
+
+      const schema = object().shape({
+        username: string().required(),
+      });
+
+      await schema.validate(req.query);
+
+      const text = "SELECT * FROM users WHERE username = $1";
+      const values = [username];
+
+      const result = await db.query(text, values);
+
+      if (!result.rows[0]) {
+        return res.status(500).json({ error: "User not exists" });
+      }
+
+      return res.status(200).json(result.rows[0]);
+    } catch (error) {
+      return res.status(400).json({ error: error?.message });
+    }
+  }
 }
 
 export default new users();
