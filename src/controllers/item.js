@@ -1,6 +1,6 @@
 import { object, string, number, date, InferType, boolean } from "yup";
 import { db } from "../db";
-import unitQueries from "../queries/units";
+import unitQueries from "../db/queries/units";
 
 class itemController {
   async get(req, res) {

@@ -1,5 +1,5 @@
 import { object, string, number, date, InferType } from "yup";
-import itemQueries from "../queries/items";
+import itemQueries from "../db/queries/items";
 
 export default async (req, res, next) => {
   try {

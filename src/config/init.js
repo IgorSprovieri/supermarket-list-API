@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { unitsSeed } from "../seeds";
+import { unitsSeed } from "../db/seeders";
 
 const createSeeds = async () => {
   for (const element of unitsSeed) {

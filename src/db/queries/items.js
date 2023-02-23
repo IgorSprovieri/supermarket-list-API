@@ -1,9 +1,9 @@
-import { db } from "../db";
+import { db } from "..";
 
-class unitQueries {
+class itemQueries {
   async findById(id) {
     try {
-      const text = "SELECT * FROM units WHERE id = $1";
+      const text = "SELECT * FROM items WHERE id = $1";
       const values = [id];
 
       const result = await db.query(text, values);
@@ -15,4 +15,4 @@ class unitQueries {
   }
 }
 
-export default new unitQueries();
+export default new itemQueries();

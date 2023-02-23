@@ -1,4 +1,4 @@
-import { db } from "../db";
+import { db } from "..";
 
 class userQueries {
   async findOne(username) {

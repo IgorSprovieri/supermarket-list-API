@@ -1,5 +1,5 @@
 import { object, string, number, date, InferType } from "yup";
-import userQueries from "../queries/users";
+import userQueries from "../db/queries/users";
 
 export default async (req, res, next) => {
   try {

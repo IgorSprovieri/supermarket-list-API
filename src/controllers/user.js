@@ -1,6 +1,6 @@
 import { db } from "../db";
 import { object, string, number, date, InferType } from "yup";
-import userQueries from "../queries/users";
+import userQueries from "../db/queries/users";
 
 class userController {
   async post(req, res) {
