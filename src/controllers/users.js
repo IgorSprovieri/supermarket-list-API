@@ -5,22 +5,24 @@ import userQueries from "../queries/users";
 class users {
   async post(req, res) {
     try {
-      const { username } = req.body;
+      const data = {
+        username: req.body.username,
+      };
 
       const schema = object().shape({
         username: string().required(),
       });
 
-      await schema.validate(req.body);
+      await schema.validate(data);
 
-      const findOneResult = await userQueries.findOne(username);
+      const findOneResult = await userQueries.findOne(data.username);
 
       if (findOneResult) {
         return res.status(400).json({ error: "User already exists" });
       }
 
       const text = "INSERT INTO users(username) VALUES($1) RETURNING *";
-      const values = [username];
+      const values = [data.username];
 
       const result = await db.query(text, values);
 
@@ -36,16 +38,18 @@ class users {
 
   async get(req, res) {
     try {
-      const { username } = req.query;
+      const data = {
+        username: req.query.username,
+      };
 
       const schema = object().shape({
         username: string().required(),
       });
 
-      await schema.validate(req.query);
+      await schema.validate(data);
 
       const text = "SELECT * FROM users WHERE username = $1";
-      const values = [username];
+      const values = [data.username];
 
       const result = await db.query(text, values);
 
