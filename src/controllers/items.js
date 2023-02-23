@@ -67,6 +67,57 @@ class items {
       return res.status(400).json({ error: error?.message });
     }
   }
+
+  async put(req, res) {
+    try {
+      const data = {
+        user_id: req.userId,
+        id: req.query.id,
+        unit_id: req.body.unit_id,
+        name: req.body.name,
+        quantity: req.body.quantity,
+        checked: req.body.checked,
+      };
+
+      const schema = object().shape({
+        id: number().required,
+        unit_id: number(),
+        name: string(),
+        quantity: number(),
+        checked: boolean(),
+      });
+
+      await schema.validate(data);
+
+      if (data.unit_id) {
+        const unitFound = unitQueries.findById(data.unit_id);
+
+        if (!unitFound) {
+          res.status(404).json({ error: "Unit not found" });
+        }
+      }
+
+      const text =
+        "UPDATE items SET unit_id = $2, name = $3, quantity = $4, checked = $5 WHERE id = $1 RETURNING *";
+      const values = [
+        data.id,
+        data.unit_id,
+        data.name,
+        data.quantity,
+        data.checked,
+      ];
+
+      const result = await db.query(text, values);
+
+      if (!result.rows[0]) {
+        return res.status(400).json({ error: "Item can not be updated" });
+      }
+
+      return res.status(201).json(result.rows[0]);
+    } catch (error) {
+      return res.status(400).json({ error: error?.message });
+    }
+  }
 }
 
 export default new items();
