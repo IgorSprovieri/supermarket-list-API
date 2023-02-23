@@ -2,7 +2,7 @@ import { db } from "../db";
 import { object, string, number, date, InferType } from "yup";
 import userQueries from "../queries/users";
 
-class users {
+class userController {
   async post(req, res) {
     try {
       const data = {
@@ -134,4 +134,4 @@ class users {
   }
 }
 
-export default new users();
+export default new userController();

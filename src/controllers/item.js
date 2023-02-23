@@ -2,7 +2,7 @@ import { object, string, number, date, InferType, boolean } from "yup";
 import { db } from "../db";
 import unitQueries from "../queries/units";
 
-class items {
+class itemController {
   async get(req, res) {
     try {
       const data = {
@@ -72,7 +72,7 @@ class items {
     try {
       const data = {
         user_id: req.userId,
-        id: req.query.id,
+        id: req.itemId,
         unit_id: req.body.unit_id,
         name: req.body.name,
         quantity: req.body.quantity,
@@ -80,7 +80,6 @@ class items {
       };
 
       const schema = object().shape({
-        id: number().required,
         unit_id: number(),
         name: string(),
         quantity: number(),
@@ -113,11 +112,11 @@ class items {
         return res.status(400).json({ error: "Item can not be updated" });
       }
 
-      return res.status(201).json(result.rows[0]);
+      return res.status(200).json(result.rows[0]);
     } catch (error) {
       return res.status(400).json({ error: error?.message });
     }
   }
 }
 
-export default new items();
+export default new itemController();

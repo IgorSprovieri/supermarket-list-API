@@ -1,19 +1,24 @@
 import { Router } from "express";
-import users from "../controllers/users";
-import units from "../controllers/units";
-import items from "../controllers/items";
-import auth from "../middlewares/auth";
+import userController from "../controllers/user";
+import unitController from "../controllers/unit";
+import itemController from "../controllers/item";
+import authMiddleware from "../middlewares/auth";
+import itemMiddleware from "../middlewares/item";
 const routes = new Router();
 
-routes.get("/user", users.get);
-routes.post("/user", users.post);
-routes.get("/units", units.get);
+routes.get("/user", userController.get);
+routes.post("/user", userController.post);
+routes.get("/units", unitController.get);
 
 //----------- Logged Routes ------------
-routes.use(auth);
-routes.put("/user/:id", users.put);
-routes.delete("/user/:id", users.delete);
+routes.use(authMiddleware);
+routes.put("/user/:id", userController.put);
+routes.delete("/user/:id", userController.delete);
 
-routes.get("/items", items.get);
-routes.post("/item", items.post);
+routes.get("/items", itemController.get);
+routes.post("/item", itemController.post);
+
+routes.use("/item/:id", itemMiddleware);
+routes.put("/item/:id", itemController.put);
+
 export default routes;

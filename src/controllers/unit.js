@@ -1,6 +1,6 @@
 import { db } from "../db";
 
-class units {
+class unitController {
   async get(req, res) {
     try {
       const text = "SELECT * FROM units";
@@ -13,4 +13,4 @@ class units {
   }
 }
 
-export default new units();
+export default new unitController();
