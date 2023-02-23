@@ -1,4 +1,4 @@
-export const unitsSeed = [
+export const unitsSeeder = [
   {
     unit: "Unidades",
     abbreviation: "Ud",

@@ -1,8 +1,15 @@
 import { db } from "../db";
-import { unitsSeed } from "../db/seeders";
+import { unitsSeeder } from "../db/seeders";
+import { tables } from "../db/migrations";
 
-const createSeeds = async () => {
-  for (const element of unitsSeed) {
+const createTables = async () => {
+  for (const element of tables) {
+    await db.query(element.query);
+  }
+};
+
+const createSeeders = async () => {
+  for (const element of unitsSeeder) {
     const text = "INSERT INTO units (unit, abbreviation) VALUES ($1, $2)";
     const values = [element.unit, element.abbreviation];
 
@@ -10,4 +17,5 @@ const createSeeds = async () => {
   }
 };
 
-createSeeds();
+createTables();
+createSeeders();
