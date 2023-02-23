@@ -20,5 +20,6 @@ routes.post("/item", itemController.post);
 
 routes.use("/item/:id", itemMiddleware);
 routes.put("/item/:id", itemController.put);
+routes.delete("/item/:id", itemController.delete);
 
 export default routes;

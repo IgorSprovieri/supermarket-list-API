@@ -71,7 +71,6 @@ class itemController {
   async put(req, res) {
     try {
       const data = {
-        user_id: req.userId,
         id: req.itemId,
         unit_id: req.body.unit_id,
         name: req.body.name,
@@ -110,6 +109,27 @@ class itemController {
 
       if (!result.rows[0]) {
         return res.status(400).json({ error: "Item can not be updated" });
+      }
+
+      return res.status(200).json(result.rows[0]);
+    } catch (error) {
+      return res.status(400).json({ error: error?.message });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const data = {
+        id: req.itemId,
+      };
+
+      const text = "DELETE FROM items WHERE id = $1 RETURNING *";
+      const values = [data.id];
+
+      const result = await db.query(text, values);
+
+      if (!result.rows[0]) {
+        return res.status(400).json({ error: "Item can not be deleted" });
       }
 
       return res.status(200).json(result.rows[0]);
