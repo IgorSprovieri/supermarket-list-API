@@ -3,6 +3,24 @@ import { db } from "../db";
 import unitQueries from "../queries/units";
 
 class items {
+  async get(req, res) {
+    try {
+      const data = {
+        user_id: req.userId,
+      };
+
+      const text =
+        "SELECT * FROM items JOIN units ON items.unit_id = units.id WHERE user_id = $1";
+      const values = [data.user_id];
+
+      const result = await db.query(text, values);
+
+      return res.status(200).json(result.rows);
+    } catch (error) {
+      return res.status(400).json({ error: error?.message });
+    }
+  }
+
   async post(req, res) {
     try {
       const data = {

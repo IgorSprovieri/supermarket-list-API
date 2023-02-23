@@ -1,22 +1,22 @@
 export const unitsSeed = [
   {
-    name: "Unidades",
+    unit: "Unidades",
     abbreviation: "Ud",
   },
   {
-    name: "Pacote",
+    unit: "Pacote",
     abbreviation: "Pc",
   },
   {
-    name: "Dúzia",
+    unit: "Dúzia",
     abbreviation: "Dz",
   },
   {
-    name: "Kilograma",
+    unit: "Kilograma",
     abbreviation: "Kg",
   },
   {
-    name: "Litro",
+    unit: "Litro",
     abbreviation: "Lt",
   },
 ];
