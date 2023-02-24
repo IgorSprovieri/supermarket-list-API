@@ -132,16 +132,22 @@ npm run config:init
 Observation: if dont't stop press CTRL + C
 ```
 
-6. Run the project
-
-```
-npm run start
-```
-
-7. Run the project on dev mode
+6. Run the project on dev mode
 
 ```
 npm run start:dev
+```
+
+7. Build the project
+
+```
+npm run build
+```
+
+8. Run the project
+
+```
+npm run start
 ```
 
 ## Author
