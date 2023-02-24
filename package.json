@@ -4,10 +4,10 @@
   "description": "A Supermarket List API made with Node, Express and PostgreSQL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "config:init": "sucrase-node src/config/init.js",
-    "start": "sucrase-node src/index.js",
-    "start:dev": "nodemon src/index.js"
+    "start:dev": "nodemon src/index.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "dist/index.js"
   },
   "repository": {
     "type": "git",
