@@ -55,6 +55,8 @@ https://github.com/IgorSprovieri/supermarket-list-API/Insomnia.json
 
 ### Seeders
 
+---
+
 > Units
 
 id: 1
