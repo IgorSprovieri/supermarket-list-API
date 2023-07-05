@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
-const port = Number(process.env.PORT);
+const port = Number(process.env.PORT) || 3000;
 
 async function connectDatabase() {
   await mongoose.connect(process.env.DATABASE_URL);
@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
   res.send("Supermarket List Api is running!");
 });
 
-app.listen("0.0.0.0", port, () => {
+app.listen(port, "0.0.0.0", () => {
   mongoose.set("strictQuery", true);
   connectDatabase().catch((error) => {
     console.log(error);
