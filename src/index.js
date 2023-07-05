@@ -5,11 +5,7 @@ const listItemRouter = require("./routes/listItem");
 const cors = require("cors");
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 const port = Number(process.env.PORT);
 
@@ -18,14 +14,14 @@ async function connectDatabase() {
 }
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Supermarket List Api is running!");
 });
 
-app.listen(port, () => {
+app.listen("0.0.0.0", port, () => {
   mongoose.set("strictQuery", true);
   connectDatabase().catch((error) => {
     console.log(error);
   });
   app.use("/", listItemRouter);
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Supermarket List listening on port ${port}`);
 });
